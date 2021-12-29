@@ -77,4 +77,23 @@ export const GlobalStyle = createGlobalStyle`
     ul {
         list-style: none;
     }
+
+    .lazyappear {
+        transition: opacity 0.3s ease-out;
+    }
+
+    .animation-appear {
+        animation: appear 0.8s ease-out;
+    }
+
+    @keyframes appear {
+        0% {
+            opacity: 0;
+            transform: translateX(3rem);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
 `

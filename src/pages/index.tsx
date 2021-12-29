@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import isEmpty from 'lodash.isempty'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Button } from '../components/Button'
 import { Header } from '../components/Header'
 import { API } from '../services/API'
@@ -13,6 +13,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { MdContentCopy } from 'react-icons/md'
 import { RiCloseLine } from 'react-icons/ri'
 import { Alert } from '../components/Alert'
+import { lazyAppear } from '../utils'
 
 type ShortedLink = {
     to: string
@@ -35,7 +36,6 @@ export default function Home() {
     const shortLinkAliasInputRef = useRef<HTMLInputElement>(null)
 
     function removeAlert(key: string | number) {
-        console.log('removeAlert', key)
         setAlerts(alerts.filter(i => i.key !== key))
     }
 
@@ -69,11 +69,9 @@ export default function Home() {
 
         try {
             const r = await API.post('/link', { to: link, id: alias })
-            const shortedLink = location.href + r.data.id
+            const shortedLink = location.origin + '/' + r.data.id
 
-            if (link.length >= 48) {
-                link = link.slice(0, 48) + '...'
-            }
+            link = link.length >= 40 ? link.slice(0, 40) + '...' : link
 
             setShortedLinks([...shortedLinks, { to: link, shortedLink }])
         } catch (e) {
@@ -95,6 +93,8 @@ export default function Home() {
         localStorage.setItem('shortedLinks', JSON.stringify(shortedLinks))
     }, [shortedLinks])
 
+    useLayoutEffect(lazyAppear, [])
+    
     return (
         <>
             <Head>
@@ -122,7 +122,7 @@ export default function Home() {
                 <Header />
 
                 <main className='main'>
-                    <section className='main__hero-section hero-section'>
+                    <section className='main__hero-section hero-section lazyappear'>
                         <div className='hero-section__image-container'>
                             <img
                                 className='hero-section__image-container__img'
@@ -235,7 +235,7 @@ export default function Home() {
                     </section>
 
                     <section className='main__intro-section intro-section'>
-                        <div className='intro-section__content-wrapper'>
+                        <div className='intro-section__content-wrapper lazyappear'>
                             <h2 className='intro-section__content-wrapper__title'>
                                 Advanced Statistics
                             </h2>
@@ -245,7 +245,7 @@ export default function Home() {
                             </p>
                         </div>
 
-                        <div className='intro-section__items'>
+                        <div className='intro-section__items lazyappear'>
                             <div className='intro-section__items__item'>
                                 <div className='intro-section__items__item__image-container'>
                                     <Image
