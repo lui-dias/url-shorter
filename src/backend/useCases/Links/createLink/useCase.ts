@@ -15,7 +15,7 @@ export class CreateLinkUseCase extends UseCaseBase<
                 const link = new Link(to, id)
                 await this.create(link)
                 return { id: link.id }
-
+                
             } catch (err: any) {
                 const IDAlreadyExists = err.message === 'P2002'
 
