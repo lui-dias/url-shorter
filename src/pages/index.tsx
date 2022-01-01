@@ -90,8 +90,9 @@ export default function Home() {
     }
 
     useEffect(() => {
-        AOS.init()
-        AOS.refresh()
+        AOS.init({
+            once: true,
+        })
 
         if (!localStorage.getItem('shortedLinks')) {
             localStorage.setItem('shortedLinks', '[]')
