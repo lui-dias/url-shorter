@@ -3,7 +3,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import isEmpty from 'lodash.isempty'
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import AOS from 'aos'
+import { useEffect, useRef, useState } from 'react'
 import { Button } from '../components/Button'
 import { Header } from '../components/Header'
 import { API } from '../services/API'
@@ -13,7 +14,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai'
 import { MdContentCopy } from 'react-icons/md'
 import { RiCloseLine } from 'react-icons/ri'
 import { Alert } from '../components/Alert'
-import { lazyAppear } from '../utils'
+import 'aos/dist/aos.css'
 
 type ShortedLink = {
     to: string
@@ -78,7 +79,10 @@ export default function Home() {
             if (e.response.status === 409) {
                 createAlert('Link already exists', 'hsl(0, 87%, 67%)')
             } else {
-                createAlert(`[${e.response.status}] ${e.response.data.error}`, 'hsl(0, 87%, 67%)')
+                createAlert(
+                    `[${e.response.status}] ${e.response.data.error}`,
+                    'hsl(0, 87%, 67%)'
+                )
             }
         }
 
@@ -86,6 +90,9 @@ export default function Home() {
     }
 
     useEffect(() => {
+        AOS.init()
+        AOS.refresh()
+
         if (!localStorage.getItem('shortedLinks')) {
             localStorage.setItem('shortedLinks', '[]')
         }
@@ -97,8 +104,6 @@ export default function Home() {
         localStorage.setItem('shortedLinks', JSON.stringify(shortedLinks))
     }, [shortedLinks])
 
-    useLayoutEffect(lazyAppear, [])
-    
     return (
         <>
             <Head>
@@ -126,7 +131,7 @@ export default function Home() {
                 <Header />
 
                 <main className='main'>
-                    <section className='main__hero-section hero-section lazyappear'>
+                    <section className='main__hero-section hero-section' data-aos='fade-up'>
                         <div className='hero-section__image-container'>
                             <img
                                 className='hero-section__image-container__img'
@@ -239,7 +244,7 @@ export default function Home() {
                     </section>
 
                     <section className='main__intro-section intro-section'>
-                        <div className='intro-section__content-wrapper lazyappear'>
+                        <div className='intro-section__content-wrapper' data-aos='fade-up'>
                             <h2 className='intro-section__content-wrapper__title'>
                                 Advanced Statistics
                             </h2>
@@ -249,7 +254,7 @@ export default function Home() {
                             </p>
                         </div>
 
-                        <div className='intro-section__items lazyappear'>
+                        <div className='intro-section__items' data-aos='fade-up'>
                             <div className='intro-section__items__item'>
                                 <div className='intro-section__items__item__image-container'>
                                     <Image
