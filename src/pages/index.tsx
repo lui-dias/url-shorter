@@ -73,7 +73,7 @@ export default function Home() {
 
             link = link.length >= 40 ? link.slice(0, 40) + '...' : link
 
-            setShortedLinks([...shortedLinks, { to: link, shortedLink }])
+            setShortedLinks([{ to: link, shortedLink }, ...shortedLinks])
         } catch (e: any) {
             if (e.response.status === 409) {
                 createAlert('Link already exists', 'hsl(0, 87%, 67%)')
