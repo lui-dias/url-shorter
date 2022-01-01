@@ -4,10 +4,11 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "studio": "dotenv -e .env.development -- prisma studio",
+    "studio:dev": "dotenv -e .env.development -- prisma studio",
     "migrate:dev": "dotenv -e .env.development -- prisma migrate dev",
-    "push:prod": "dotenv -e .env.production -- prisma db push",
-    "test": "dotenv -e .env.development -- jest"
+    "test:dev": "dotenv -e .env.development -- jest",
+    "studio": "dotenv -e .env.production -- prisma studio",
+    "push": "dotenv -e .env.production -- prisma db push"
   },
   "dependencies": {
     "@prisma/client": "^3.7.0",
