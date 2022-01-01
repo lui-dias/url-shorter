@@ -74,8 +74,12 @@ export default function Home() {
             link = link.length >= 40 ? link.slice(0, 40) + '...' : link
 
             setShortedLinks([...shortedLinks, { to: link, shortedLink }])
-        } catch (e) {
-            createAlert('Alias already exists', 'hsl(0, 87%, 67%)')
+        } catch (e: any) {
+            if (e.response.status === 409) {
+                createAlert('Link already exists', 'hsl(0, 87%, 67%)')
+            } else {
+                createAlert(`[${e.response.status}] ${e.response.data.error}`, 'hsl(0, 87%, 67%)')
+            }
         }
 
         setIsWaitingLinkBeCreated(false)
